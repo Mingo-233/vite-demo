@@ -30,6 +30,11 @@ module.exports = {
     jQuery: false
   },
   rules: {
-    'prettier/prettier': 'error'
+    'prettier/prettier': 'error',
+    'vue/no-multiple-template-root': 0,
+    'no-unused-vars': 1,
+    'vue/multi-word-component-names': 0,
+    'import/extensions': 0,
+    'import/no-unresolved': 0
   }
 };
