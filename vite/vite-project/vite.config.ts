@@ -17,12 +17,17 @@ console.log(process.env.NODE_ENV);
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: isProduction ? CDN_URL : '/',
+  // base: isProduction ? CDN_URL : '/',
+  base: '/',
   // 手动指定项目根目录位置 这样把index。html 放src下也能正常启动
   root: path.join(__dirname, 'src'),
   plugins: [vue()],
   server: {
     host: '0.0.0.0'
+  },
+
+  build: {
+    outDir: path.join(__dirname, 'dist')
   },
   // css 相关的配置
   css: {
