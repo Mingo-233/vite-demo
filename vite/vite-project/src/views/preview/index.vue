@@ -10,6 +10,7 @@
 import { onMounted, ref } from 'vue';
 // Vite 中已经内置了对于 JSON 文件的解析，底层使用@rollup/pluginutils 的 dataToEsm 方法将 JSON 对象转换为一个包含各种具名导出的 ES 模块
 import init from '@a/file/fib.wasm';
+import axios from 'axios';
 import packageJson from '../../../package.json';
 
 type FibFunc = (num: number) => number;
@@ -23,6 +24,7 @@ init({}).then((exports) => {
 });
 onMounted(() => {
   console.log(packageJson);
+  axios.get('noknow');
 });
 </script>
 
