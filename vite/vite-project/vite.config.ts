@@ -27,7 +27,20 @@ export default defineConfig({
   },
 
   build: {
-    outDir: path.join(__dirname, 'dist')
+    outDir: path.join(__dirname, 'dist'),
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // 将 vue 相关库打包成单独的 chunk 中
+          'vue-vendor': ['vue'],
+          // 将 Lodash 库的代码单独打包
+          // lodash: ['lodash-es']
+          // 将组件库的代码打包
+          // library: ['antd', '@arco-design/web-react']
+          library: ['axios', 'ant-design-vue']
+        }
+      }
+    }
   },
   // css 相关的配置
   css: {
