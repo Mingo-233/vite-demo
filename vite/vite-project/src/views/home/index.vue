@@ -1,5 +1,6 @@
 <template>
   <div>home</div>
+  <a-button>a</a-button>
   <TitleCom></TitleCom>
 </template>
 
