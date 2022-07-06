@@ -55,7 +55,11 @@ export default defineConfig({
     preprocessorOptions: {
       less: {
         // additionalData 的内容会在每个 scss 文件的开头自动注入
-        additionalData: `@import "${variablePath}";`
+        additionalData: `@import "${variablePath}";`,
+        modifyVars: {
+          'primary-color': '#ff7714'
+        },
+        javascriptEnabled: true
       }
     },
     modules: {

@@ -1,6 +1,6 @@
 <template>
   <div>home</div>
-  <a-button>a</a-button>
+  <a-button class="tb" type="primary">a</a-button>
   <TitleCom></TitleCom>
 </template>
 
@@ -8,4 +8,8 @@
 import TitleCom from '@/components/TitleCom.vue';
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+.tb {
+  width: 300px;
+}
+</style>
