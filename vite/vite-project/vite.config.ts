@@ -9,7 +9,8 @@ import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers';
 
 const isProduction = process.env.NODE_ENV === 'production';
 // 填入项目的 CDN 域名地址
-const CDN_URL = 'xxxxxx';
+const CDN_URL = 'https://yun.baoxiaohe.com/';
+
 // 全局 scss 文件的路径
 // 用 normalizePath 解决 window 下的路径问题
 const variablePath = normalizePath(
@@ -21,13 +22,13 @@ export default ({ mode }) => {
   process.env = { ...process.env, ...loadEnv(mode, process.cwd()) };
   const { VITE_PUBLIC_PATH, VITE_APP_DOMAIN, VITE_NODE_ENV, VITE_APP_SITE } =
     process.env;
-  console.log(VITE_NODE_ENV);
+  console.log(VITE_PUBLIC_PATH);
   // https://vitejs.dev/config/
 
   return defineConfig({
     // base: isProduction ? CDN_URL : '/',
     // 在开发或生产中服务时的基本公共路径 可以是绝对路径（例如http开头）也可以相对路径
-    base: '/',
+    base: CDN_URL,
     // 手动指定项目根目录位置 这样把index。html 放src下也能正常启动
     root: path.join(__dirname, 'src'),
     plugins: [
@@ -60,6 +61,8 @@ export default ({ mode }) => {
 
     build: {
       outDir: path.join(__dirname, 'dist'),
+      // VITE_PUBLIC_PATH
+      // assetsDir: VITE_PUBLIC_PATH,
       terserOptions: {
         compress: {
           drop_console: true,
@@ -72,9 +75,25 @@ export default ({ mode }) => {
       },
       rollupOptions: {
         output: {
-          chunkFileNames: 'stc/js/[name]-[hash].js',
-          entryFileNames: 'stc/js/[name]-[hash].js',
-          assetFileNames: 'stc/img/[name]-[hash].[ext]',
+          chunkFileNames: `${VITE_PUBLIC_PATH}/js/[name]-[hash].js`,
+          entryFileNames: `${VITE_PUBLIC_PATH}/js/[name]-[hash].js`,
+          // assetFileNames: 'stc/img/[name]-[hash].[ext]',
+          assetFileNames: (assetInfo) => {
+            const info = assetInfo.name.split('.');
+            let extType = info[info.length - 1];
+            if (
+              /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/i.test(assetInfo.name)
+            ) {
+              extType = 'media';
+            } else if (/\.(css)(\?.*)?$/i.test(assetInfo.name)) {
+              extType = 'css';
+            } else if (/\.(png|jpe?g|gif|svg)(\?.*)?$/.test(assetInfo.name)) {
+              extType = 'img';
+            } else if (/\.(woff2?|eot|ttf|otf)(\?.*)?$/i.test(assetInfo.name)) {
+              extType = 'fonts';
+            }
+            return `${VITE_PUBLIC_PATH}/${extType}/[name]-[hash][extname]`;
+          },
           manualChunks: {
             // 将 vue 相关库打包成单独的 chunk 中
             'vue-vendor': ['vue'],
