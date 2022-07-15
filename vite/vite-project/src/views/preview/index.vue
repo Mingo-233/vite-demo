@@ -4,6 +4,20 @@
   <img src="@a/img/a.jpg" alt="a" />
   <img src="@a/img/loadding.gif" alt="gif" />
   <div>Web Assembly 加载数据： {{ fibNum }}</div>
+  <a-tabs v-model:activeKey="activeKey">
+    <a-tab-pane key="1">
+      <template #tab>
+        <span> Tab 1 </span>
+      </template>
+      Tab 1
+    </a-tab-pane>
+    <a-tab-pane key="2">
+      <template #tab>
+        <span> Tab 2 </span>
+      </template>
+      Tab 2
+    </a-tab-pane>
+  </a-tabs>
 </template>
 
 <script setup lang="ts">
@@ -16,6 +30,7 @@ import packageJson from '../../../package.json';
 type FibFunc = (num: number) => number;
 const fibNum = ref(0);
 
+const activeKey = ref('1');
 init({}).then((exports) => {
   //   console.log(exports);
   const fibFunc = exports.fib as FibFunc;
@@ -24,7 +39,7 @@ init({}).then((exports) => {
 });
 onMounted(() => {
   console.log(packageJson);
-  axios.get('noknow');
+  // axios.get('noknow');
 });
 </script>
 
