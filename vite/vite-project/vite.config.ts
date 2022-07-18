@@ -6,10 +6,12 @@ import vue from '@vitejs/plugin-vue';
 import path from 'path';
 import Components from 'unplugin-vue-components/vite';
 import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers';
+import { visualizer } from 'rollup-plugin-visualizer';
 
 const isProduction = process.env.NODE_ENV === 'production';
 // 填入项目的 CDN 域名地址
 const CDN_URL = 'https://yun.baoxiaohe.com/';
+const isAnalyze = process.env.BUILD_TYPE === 'analyze';
 
 // 全局 scss 文件的路径
 // 用 normalizePath 解决 window 下的路径问题
@@ -24,20 +26,23 @@ export default ({ mode }) => {
     process.env;
   console.log(VITE_PUBLIC_PATH);
   // https://vitejs.dev/config/
-
+  const plugins = [
+    vue(),
+    Components({
+      resolvers: [AntDesignVueResolver({ importStyle: 'less' })],
+      dts: true // enabled by default if `typescript` is installed
+    })
+  ];
+  if (isAnalyze) {
+    plugins.push(visualizer({ open: true, gzipSize: true, brotliSize: true }));
+  }
   return defineConfig({
     // base: isProduction ? CDN_URL : '/',
     // 在开发或生产中服务时的基本公共路径 可以是绝对路径（例如http开头）也可以相对路径
     base: CDN_URL,
     // 手动指定项目根目录位置 这样把index。html 放src下也能正常启动
     root: path.join(__dirname, 'src'),
-    plugins: [
-      vue(),
-      Components({
-        resolvers: [AntDesignVueResolver({ importStyle: 'less' })],
-        dts: true // enabled by default if `typescript` is installed
-      })
-    ],
+    plugins,
     server: {
       host: '0.0.0.0'
       // port: 3300,
@@ -69,6 +74,7 @@ export default ({ mode }) => {
           drop_debugger: true
         }
       },
+      minify: 'terser',
       commonjsOptions: {
         // 当有 cmjs 或者esm混合使用的第三方资源时，可以统一转换为esm格式
         transformMixedEsModules: true
