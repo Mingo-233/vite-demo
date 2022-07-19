@@ -8,6 +8,8 @@ import Components from 'unplugin-vue-components/vite';
 import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers';
 import { visualizer } from 'rollup-plugin-visualizer';
 
+const resolveExternalsPlugin = require('vite-plugin-resolve-externals');
+
 const isProduction = process.env.NODE_ENV === 'production';
 // 填入项目的 CDN 域名地址
 const CDN_URL = 'https://yun.baoxiaohe.com/';
@@ -32,14 +34,17 @@ export default ({ mode }) => {
       resolvers: [AntDesignVueResolver({ importStyle: 'less' })],
       dts: true // enabled by default if `typescript` is installed
     })
+    // resolveExternalsPlugin({
+    //   vue: 'Vue'
+    // })
   ];
   if (isAnalyze) {
     plugins.push(visualizer({ open: true, gzipSize: true, brotliSize: true }));
   }
   return defineConfig({
-    // base: isProduction ? CDN_URL : '/',
+    base: isProduction ? CDN_URL : '/',
     // 在开发或生产中服务时的基本公共路径 可以是绝对路径（例如http开头）也可以相对路径
-    base: CDN_URL,
+    // base: CDN_URL,
     // 手动指定项目根目录位置 这样把index。html 放src下也能正常启动
     root: path.join(__dirname, 'src'),
     plugins,
@@ -107,7 +112,8 @@ export default ({ mode }) => {
             // lodash: ['lodash-es']
             // 将组件库的代码打包
             // library: ['antd', '@arco-design/web-react']
-            library: ['axios', 'ant-design-vue']
+            'axios-vendor': ['axios'],
+            library: ['ant-design-vue']
           }
         }
       }

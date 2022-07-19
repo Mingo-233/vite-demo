@@ -35,6 +35,7 @@ module.exports = {
     'no-unused-vars': 1,
     'vue/multi-word-component-names': 0,
     'import/extensions': 0,
-    'import/no-unresolved': 0
+    'import/no-unresolved': 0,
+    'import/no-extraneous-dependencies': 1
   }
 };
