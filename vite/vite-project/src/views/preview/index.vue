@@ -43,4 +43,9 @@ onMounted(() => {
 });
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+.h1 {
+  text-decoration: dashed;
+  backdrop-filter: blur(8px);
+}
+</style>

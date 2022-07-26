@@ -7,6 +7,7 @@ import path from 'path';
 import Components from 'unplugin-vue-components/vite';
 import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers';
 import { visualizer } from 'rollup-plugin-visualizer';
+import autoprefixer from 'autoprefixer';
 
 const resolveExternalsPlugin = require('vite-plugin-resolve-externals');
 
@@ -120,6 +121,13 @@ export default ({ mode }) => {
     },
     // css 相关的配置
     css: {
+      postcss: {
+        plugins: [
+          autoprefixer({
+            overrideBrowserslist: ['> 1%', 'last 2 versions', 'not dead']
+          })
+        ]
+      },
       preprocessorOptions: {
         less: {
           // additionalData 的内容会在每个 scss 文件的开头自动注入
